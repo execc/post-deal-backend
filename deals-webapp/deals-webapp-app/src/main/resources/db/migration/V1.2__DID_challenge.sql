@@ -1,0 +1,1 @@
+alter table did add column challenge varchar(255);

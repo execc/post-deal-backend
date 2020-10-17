@@ -1,0 +1,40 @@
+we-oauth2:
+  additional:
+    clientsDetails:
+      - clientId: demo-client
+        clientSecret: $2a$10$tMeeyBJ5c1b2lDHS/4V/IuXh1.HkIvESvJVMuv1ct7uim/bPJ4BGy # deals-app-secret
+        resourceIds:
+          - vst-oauth2
+          - vst-identity
+          - vst-files
+          - deals-app
+        scope:
+          - read
+          - vst-client
+        authorizedGrantTypes:
+          - password
+          - refresh_token
+        registeredRedirectUri:
+          - http://localhost/test
+        authorities:
+          - ROLE_TRUSTED_CLIENT
+          - WE_IDENTITY_READ
+
+      - clientId: deals-app
+        clientSecret: $2a$10$iMl38B5/IvyGKzOUEhefee5aiVA2HyDwytgG/lVkAI8qJvWifQrXO # deals-app-secret
+        resourceIds:
+          - vst-identity
+          - vst-files
+          - vst-oauth2
+        scope:
+          - read
+        authorizedGrantTypes:
+          - client_credentials
+        authorities:
+          - ROLE_TRUSTED_CLIENT
+          - WE_IDENTITY_READ
+          - WE_IDENTITY_WRITE
+          - WE_PRIVACY_READ
+          - WE_PRIVACY_WRITE
+          - WE_OAUTH2_WRITE
+          - WE_OAUTH2_READ

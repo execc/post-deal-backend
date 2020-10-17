@@ -1,0 +1,61 @@
+version: '3.4'
+networks:
+   wavesenterprise-network:
+     driver: bridge
+services:
+  db-app:
+    image: postgres:11
+    restart: always
+    container_name: db-app
+    hostname: db-app
+    env_file: ./config/db-app/env
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=db_oauth2,db_identity,db_files,db_deals_app
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    volumes:
+      - ./config/db-app/scripts:/docker-entrypoint-initdb.d/
+      - ./data/db-app/pg:/var/lib/postgresql/data
+    networks:
+      - wavesenterprise-network
+  vst-identity:
+    image: registry.wavesenterprise.com/icore/vst-identity:48cecbb4
+    hostname: vst-identity
+    restart: always
+    container_name: vst-identity
+    expose:
+      - 8080
+    ports:
+      - 8090:8080
+    env_file: ./config/vst-identity/env
+    networks:
+      - wavesenterprise-network
+  vst-oauth2:
+    image: registry.wavesenterprise.com/icore/vst-oauth2:330e4077
+    hostname: vst-oauth2
+    restart: always
+    container_name: vst-oauth2
+    expose:
+      - 8080
+    ports:
+      - 8091:8080
+    env_file: ./config/vst-oauth2/env
+    volumes:
+      - "./config/vst-oauth2/oauth-clients.yml:/opt/oauth-clients.yml"
+      - "./config/vst-oauth2/user-companies.json:/opt/user-companies.json"
+    networks:
+      - wavesenterprise-network
+  vst-files:
+    image: registry.wavesenterprise.com/icore/vst-files:569bee41
+    hostname: vst-files
+    restart: always
+    container_name: vst-files
+    expose:
+      - 8080
+    ports:
+      - 8092:8080
+    env_file: ./config/vst-files/env
+    networks:
+      - wavesenterprise-network

@@ -1,0 +1,196 @@
+info:
+  name: "@project.name@"
+  version: "@project.version@"
+  description: "@project.description@"
+  parent: "@project.parent@"
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        event:
+          merge:
+            entity_copy_observer: allow
+        jdbc:
+          time_zone: UTC
+          log.warnings: true
+          lob.non_contextual_creation: true
+  application:
+    name: deals-app
+  datasource:
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 10
+      idle-timeout: 30000
+      pool-name: deals-app-jpa-pool
+      max-lifetime: 100000
+      connection-timeout: 30000
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/db_deals_app
+    username: postgres
+    password: password
+  flyway:
+    enabled: true
+
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles:
+        http.server.requests: 0.5, 0.75, 0.95
+      percentiles-histogram:
+        http.server.requests: true
+      sla:
+        http.server.requests: 10ms, 100ms, 150ms, 250ms, 500ms, 1s
+  health:
+    rabbit:
+      enabled: false
+  info:
+    git:
+      enabled: true
+      mode: full
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+security:
+  oauth2:
+    resource:
+      id: deals-app
+      jwt:
+        key-value: -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh+sA8O8616X/nYByQ2xu
+          hhFHmec3k6urgNOphfxmZ/JQ6ySdD8hnVAqUHpKwUJkd1Nad2zKp0j4DFLw6UZTz
+          yXo4vdPo7Ibn3h8qPqmL7DDciWuVhJ6r1Gxajn+VohqAeLIOkIALzgN2yBjGQYws
+          mjrZUmk5N7A4DuHd/PksoYjRMCoISfKfjtmx9LfCHOvqivEaCCEXcEv8vMpcnPd+
+          yqQ8cUb6ya5CKdSzO82ZivIzeiJ5pvuHAmh1KsWYoqpJ82zHrdwaTElWeiN1hMv2
+          wHykww+DMm/E04oeIhDoEnyyS7wvqsOC8tJo9nMnNoc93INfeICEojEi3RX2Mtwb
+          PQIDAQAB
+          -----END PUBLIC KEY-----
+    client:
+      id: deals-app
+      client-id: deals-app
+      client-secret: deals-app-secret
+      access-token-uri: ${vst-oauth.url}/oauth/token
+      resource-ids: vst-identity,vst-files,vst-oauth2
+      grant-type: client_credentials
+
+feign:
+  retryer:
+    maxAttempts: 5
+    period: 60000
+    maxPeriod: 900000
+  client:
+    config:
+      vst-identity:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+      vst-files:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+deals-app:
+  sender: 3FqDhAXdEYyc49roUhVqgR8ZRqCtwf4eE1U
+  node-alias: node-0
+  fee: 0
+  contract:
+    image: registry.wavesenterprise.com/deals-sc/deals-contract-app:1.0.0-SNAPSHOT-20201015163946-6d4a62d.dirty
+    imageHash: 038a8ec20d77b0b6220ff7f9f8cecf0700d29cc0875ab2df60aae5a6b0c7c774
+
+node:
+  config:
+    node-0:
+      url: https://deals.weintegrator.com/node-0
+      xApiKey: 4tUPAb1pZIGWo6tn
+      nodeOwnerAddress: 3FqDhAXdEYyc49roUhVqgR8ZRqCtwf4eE1U
+      nodeOwnerPubKey:
+      keyStorePassword: nXCWqyvgU2GldD3n
+    node-1:
+      url: https://deals.weintegrator.com/node-0
+      xApiKey: 4tUPAb1pZIGWo6tn
+      nodeOwnerAddress: 3FwmReDYftcQLBRGtui4uq1dzvwZXmrQmHZ
+      nodeOwnerPubKey:
+      keyStorePassword: nXCWqyvgU2GldD3n
+    node-2:
+      url: https://deals.weintegrator.com/node-0
+      xApiKey: 4tUPAb1pZIGWo6tn
+      nodeOwnerAddress: 3Ft6wZs4bGU1fgEZaz8VuNfBoLazbKb87Si
+      nodeOwnerPubKey:
+      keyStorePassword: nXCWqyvgU2GldD3n
+
+vst-oauth:
+  url: https://deals.weintegrator.com/api/v0/vst-oauth2
+
+vst-oauth2:
+  url: ${vst-oauth.url}
+
+vst-identity:
+  url: https://deals.weintegrator.com/api/v0/vst-identity
+
+vst-files:
+  url: https://deals.weintegrator.com/api/v0/vst-files
+
+swagger:
+  basePackage: com.wavesplatform.we.app.deals
+  basePath: /
+  oauth-url: ${vst-oauth.url}/oauth/token
+
+logging:
+  level:
+    com.wavesplatform.vst.api: DEBUG
+
+tx-observer:
+  scheduler:
+    pool-size: 4
+  queue-cleaner:
+    cleanCronExpression: 0 0/5 * * * ?
+    archive-height-window: 50
+  partition-poller:
+    fixedDelayString: 1000
+    limit: 30
+  tx-poller:
+    size: 100
+  fork-resolver:
+    fixedDelayString: 5000
+    height-offset: 20
+    window: 5
+  liquid-block-polling-delay: 500
+  queue-mode: JPA
+  fixedDelayString: 2000
+  block-height-window: 50
+  nodeAlias: node-0
+  syncHistory: false
+  predicate:
+    txTypes:
+      - 103
+      - 104
+      - 105
+      - 113
+      - 114
+
+scheduler:
+  delayEnd:
+    initialDelay: 4000
+    fixedDelay: 600000
+  txStatus:
+    failedMinersThreshold: 3
+    txTimeoutMinutes: 5
+    pendingTxPollDelayMs: 2000
+
+smsc:
+  login: akafakir@gmail.com
+  password: 0YBEW6jzInyp9TNBm63e2s8dYYC
+  enable: true
+
+vc:
+  issuer: ${deals-app.sender}
+  privateKey: 1b9cdf53588f99cea61c6482c4549b0316bafde19f76851940d71babaec5e569

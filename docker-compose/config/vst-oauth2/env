@@ -1,0 +1,12 @@
+POSTGRES_PORT=5432
+POSTGRES_HOST=db-app
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+POSTGRES_ENABLE_SSL=false
+POSTGRES_DB=db_oauth2
+SPRING_PROFILES_ACTIVE=dev,docker
+management.health.rabbit.enabled=false
+VST-IDENTITY_RIBBON_LISTOFSERVERS=vst-identity:8080
+staff.init=true
+staff.jsonFile=/opt/user-companies.json
+SPRING_CONFIG_ADDITIONAL-LOCATION=/opt/oauth-clients.yml

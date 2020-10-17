@@ -1,0 +1,8 @@
+POSTGRES_PORT=5432
+POSTGRES_HOST=db-app
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+POSTGRES_ENABLE_SSL=false
+POSTGRES_DB=db_identity
+SPRING_PROFILES_ACTIVE=dev,docker
+management.health.rabbit.enabled=false

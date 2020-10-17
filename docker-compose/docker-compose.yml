@@ -1,0 +1,82 @@
+version: '3.4'
+networks:
+   wavesenterprise-network:
+     driver: bridge
+services:
+  db:
+    image: postgres:11
+    restart: always
+    container_name: db
+    env_file: ./config/db/env
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=node_0,node_1,node_2
+    expose:
+      - 5432
+    volumes:
+      - ./config/db/scripts:/docker-entrypoint-initdb.d/
+      - ./data/db/pg:/var/lib/postgresql/data
+    networks:
+      - wavesenterprise-network
+  node-0:
+    container_name: node-0
+    image: registry.wavesenterprise.com/vostok/node:v1.3.1
+    depends_on:
+      - db
+    ports:
+      - "6862:6862"
+      - "6864:6864"
+      - "6865:6865"
+    networks:
+      - wavesenterprise-network
+    hostname: node-0
+    env_file:
+      -  ./config/node-0/env
+    volumes:
+      - ./config/node-0/node.conf:/node/node.conf
+      - ./config/node-0/wallet:/node/wallet
+      - ./data/node-0/data:/node/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $HOME/.docker/config.json:/root/.docker/config.json
+    restart: always
+  node-1:
+    container_name: node-1
+    image: registry.wavesenterprise.com/vostok/node:v1.3.1
+    depends_on:
+      - db
+    ports:
+      - "16862:6862"
+      - "16864:6864"
+      - "16865:6865"
+    networks:
+      - wavesenterprise-network
+    hostname: node-1
+    env_file:
+      -  ./config/node-1/env
+    volumes:
+      - ./config/node-1/node.conf:/node/node.conf
+      - ./config/node-1/wallet:/node/wallet
+      - ./data/node-1/data:/node/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $HOME/.docker/config.json:/root/.docker/config.json
+    restart: always
+  node-2:
+    container_name: node-2
+    image: registry.wavesenterprise.com/vostok/node:v1.3.1
+    depends_on:
+      - db
+    ports:
+      - "26862:6862"
+      - "26864:6864"
+      - "26865:6865"
+    networks:
+      - wavesenterprise-network
+    hostname: node-2
+    env_file:
+      -  ./config/node-2/env
+    volumes:
+      - ./config/node-2/node.conf:/node/node.conf
+      - ./config/node-2/wallet:/node/wallet
+      - ./data/node-2/data:/node/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $HOME/.docker/config.json:/root/.docker/config.json
+    restart: always

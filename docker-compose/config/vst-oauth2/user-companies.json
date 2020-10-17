@@ -1,0 +1,105 @@
+{
+  "nodes": [
+    {
+      "alias": "node-0",
+      "ownerAddress": "3QVUnXdCq7vMJDjfcuM7G5qCqFKeBQuac8P"
+    },
+    {
+      "alias": "node-1",
+      "ownerAddress": "3Qbur18V2vQfJEcnkqM3H9ieNozVup4mG2v"
+    },
+    {
+      "alias": "node-2",
+      "ownerAddress": "3QZdm3KxwX4GRdrdGLxeZ4xmEyrv5rEXCqF"
+    }
+  ],
+  "businessRoles": [
+    {
+      "name": "USER",
+      "displayName": "Пользователь",
+      "description": "Обычная бизнес-роль."
+    }
+  ],
+  "companyTypes": [
+    {
+      "name": "COMPANY_1",
+      "displayName": "Компания 1",
+      "description": "Компания 1 - Описание"
+    },
+    {
+      "name": "COMPANY_2",
+      "displayName": "Компания 2",
+      "description": "Компания 2 - Описание"
+    },
+    {
+      "name": "COMPANY_3",
+      "displayName": "Компания 3",
+      "description": "Компания 3 - Описание"
+    }
+  ],
+  "companies": [
+    {
+      "company": {
+        "id": "03836828-4326-4726-ab18-04ec811dda74",
+        "nodeAliases": [
+          "node-0",
+          "node-1",
+          "node-2"
+        ],
+        "name": "Компания 1",
+        "type": "COMPANY_1",
+        "ogrn": "1027700067328",
+        "inn": "7728168971",
+        "meta": {}
+      },
+      "users": [
+      ]
+    },
+    {
+      "company": {
+        "id": "4f380498-e7f9-4926-b1bd-5b1e9ef39f63",
+        "nodeAliases": [
+          "node-0",
+          "node-1",
+          "node-2"
+        ],
+        "name": "Компания 2",
+        "type": "COMPANY_2",
+        "ogrn": "1187746771035",
+        "inn": "7706456380",
+        "kpp": "773101001",
+        "meta": {}
+      },
+      "users": [
+        {
+          "account": {
+            "accountId": "29f27c63-6f8b-4cd0-8114-6ade82533d81",
+            "username": "user",
+            "password": "$2a$10$1LVcHfGWrtrRpJQiRmni8OCpH4P3bSMb3pe.IE/9H22vmEgK6G0N2",
+            "roles": [
+              "WE_PRIVACY_READ",
+              "WE_PRIVACY_WRITE",
+              "WE_IDENTITY_READ",
+              "WE_IDENTITY_WRITE",
+              "WE_OAUTH2_READ",
+              "WE_OAUTH2_WRITE"
+            ]
+          },
+          "person": {
+            "personId": "06406fc9-370c-4ec3-8037-cfac843f47b9",
+            "accountId": "2037a303-0211-4379-93b1-df6dab219a41",
+            "companyId": "4f380498-e7f9-4926-b1bd-5b1e9ef39f63",
+            "lastName": "Тестов",
+            "firstName": "Тест",
+            "participantAddress": "3QVUnXdCq7vMJDjfcuM7G5qCqFKeBQuac8P",
+            "participantPublicKey": "5U1u5LAxH62RehYfVeiHtRDS4uoQxZSVzYxVUeD1p7bXaTi51AEmgByvGQTokKGRbojFpJdMVP1TSwxHzc2AsSpW",
+            "businessRoles": [
+              "USER"
+            ],
+            "meta": {}
+          }
+        }
+      ]
+    }
+  ]
+}
